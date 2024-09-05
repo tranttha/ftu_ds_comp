@@ -80,24 +80,60 @@ Người C có đường đi: (4) → (5) → (2) → (6)
 Vậy: (1) → (3): 1 người, (3) → (2): 2 người, (2) → (6): 3 người, (4) → (5): 1 người, (5)
 → (2) 1 người.
 Vậy người dùng có thói quen di chuyển nhiều nhất từ quầy (2) sang quầy (6).
-    
-    **note**: df_cus[timestamp, shelf id]
+    path=i_i[['person_id', 'shelf_id','date']].drop_duplicates().reset_index(drop=True)
+
+    result = path.groupby(['person_id', 'date'])['shelf_id'].apply(list).reset_index()
+    path_count={}
+    def create_pairwise_path(shelf_ids):
+        pairs = []
+        if len(shelf_ids) ==1:
+            pairs.append((shelf_ids[0],None))
+        else:
+            for i in range(len(shelf_ids) - 1):
+                pairs.append((shelf_ids[i],shelf_ids[i + 1]))
+        return pairs
+    result['path'] = result['shelf_id'].apply(create_pairwise_path)
+    result.drop(columns='shelf_id', inplace=True)
+    all_paths = [path for sublist in result['path'] for path in sublist]
+    from collections import Counter
+    path_counts = Counter(all_paths)
+    most_common_path, most_common_count = path_counts.most_common(1)[0]
+> ANSWER:
+(7,0)
+97 times in a week
+
+**note**: df_cus[timestamp, shelf id]
+
 ___
+05. (7đ) Trong 3 nhóm tuổi sau: Thiếu niên (18 - 30), Trung niên (31 - 60), Cao tuổi: (> 60), nhóm tuổi nào có **số người đi siêu thị nhiều nhất?**
+    shopper=df_cust[['person_id','age', 'date']]
+    bins = [18, 31, 61, shopper['age'].max() + 1]
+    labels = [1, 2, 3]
+
+    shopper['age_group'] = pd.cut(shopper.age, bins=bins, labels=labels, right=False)
+    shopper=shopper.drop(columns=['age'])
+    shopper.groupby('age_group').count().reset_index(drop=True)
+
+> ANSWER: trung nien
+person_id	date
+0	3574	3574
+1	7617	7617
+2	4203	4203
+
+**note**: df_cus
+
+---
 02. (5đ) Thống kê ***5 mặt hàng*** thường **được cầm lên rồi trả lại nhiều nhất**?
 
 03. (5đ) Các nhóm khách hàng theo độ tuổi (Thiếu niên: 18 - 30; Trung niên: 31 - 60; Cao tuổi: > 60) **mua mặt hàng nào nhiều nhất?**
 06. (5đ) Top 5 các mặt hàng giảm giá được người dùng **mua** nhiều nhất?
 07. (5đ) Top 5 các mặt hàng được chạy quảng cáo được người dùng **mua** nhiều nhất?
 **note**: df_cus (primary_key = 'Item ID','Shelf ID')
-05. (7đ) Trong 3 nhóm tuổi sau: Thiếu niên (18 - 30), Trung niên (31 - 60), Cao tuổi: (> 60), nhóm tuổi nào có **số người đi siêu thị nhiều nhất?**
-
-    **note**: df_cus
 ___ 
 04. (5đ) Ngày nào trong tuần có doanh thu cao nhất?
 **note**: df_cus (primary_key = 'Item ID','Shelf ID'), get bought pk by day and join df_item['Price_vnd']
 ___
-09. (7đ) Top 3 quầy hàng có số sản phẩm được mua nhiều nhất?
-    
+09. (7đ) Top 3 quầy hàng có số sản phẩm được **mua** nhiều nhất?
     **note**: df_shelf 
 ___
 
