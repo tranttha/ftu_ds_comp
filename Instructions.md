@@ -125,14 +125,29 @@ person_id	date
 ---
 02. (5đ) Thống kê ***5 mặt hàng*** thường **được cầm lên rồi trả lại nhiều nhất**?
 
-03. (5đ) Các nhóm khách hàng theo độ tuổi (Thiếu niên: 18 - 30; Trung niên: 31 - 60; Cao tuổi: > 60) **mua mặt hàng nào nhiều nhất?**
+        # picking_up_item & returning_item have no nulls 
+    result2=i_i[['si_id','picking_up_item','returning_item']]
+    result2=result2[(result2['picking_up_item']==True) & (result2['returning_item']==True)].groupby('si_id').count().sort_values(by='picking_up_item',ascending=False).reset_index()
+    result2=pd.merge(right=result2, left=df_item[['name', 'si_id']], how='right', on='si_id' )
+    result2=result2.drop(columns=['picking_up_item'])
+    result2.head(5)
+
+
+> ANSWER: 
+name	si_id	returning_item
+0	4 hộp sữa lúa mạch Milo 180ml	22	134
+1	Snack khoai tây Lays	07	127
+2	Mý ý SG Food	712	117
+3	Nước lẩu Barona	714	116
+4	Sữa chua Vinamik	72	114
+
+----
+03. (5đ) Các nhóm khách hàng theo độ tuổi (Thiếu niên: 18 - 30; Trung niên: 31 - 60; Cao tuổi: > 60) **mua** mặt hàng nào nhiều nhất?
 06. (5đ) Top 5 các mặt hàng giảm giá được người dùng **mua** nhiều nhất?
 07. (5đ) Top 5 các mặt hàng được chạy quảng cáo được người dùng **mua** nhiều nhất?
 **note**: df_cus (primary_key = 'Item ID','Shelf ID')
-___ 
 04. (5đ) Ngày nào trong tuần có doanh thu cao nhất?
 **note**: df_cus (primary_key = 'Item ID','Shelf ID'), get bought pk by day and join df_item['Price_vnd']
-___
 09. (7đ) Top 3 quầy hàng có số sản phẩm được **mua** nhiều nhất?
     **note**: df_shelf 
 ___
