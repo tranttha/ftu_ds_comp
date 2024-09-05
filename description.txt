@@ -1,0 +1,40 @@
+FIELDS	DESCRIPTION
+Shelf ID	Mã kệ hàng
+ItemID	Mã mặt hàng
+Name	Tên mặt hàng
+Origin	Xuất xứ
+Location	Vị trí trên kệ hàng
+Weight (g)	Khối lượng
+Price	Giá
+NSX	Ngày sản xuất
+HSD	Hạn sử dụng
+Marketing strategy	Có đang chạy chiến dịch quảng cáo không
+Discount	Giảm giá bao nhiêu phần trăm
+Rate	Điểm đánh giá 
+Shelf ID	Mã kệ hàng
+Person ID	Mã khách hàng
+Timestamp	Thời điểm ghi nhận tương tác
+Age	Tuổi
+Gender	Giới tính
+Height	Chiều cao
+Weight	Cân nặng
+Married status	Tình trạng hôn nhân
+Moving speed (m/s)	Tốc độ di chuyển
+Item ID	Mã mặt hàng
+Looking at item (s)	Nhìn vào sản phẩm bao lâu (giây)
+Holding the item (s)	Cầm xem sản phẩm bao lâu (giây)
+Holding the bag	Có cầm giỏ hàng hay không
+Picking up item	Có hay không hành động nhặt sản phẩm lên
+Returning item	Có hay không hành động trả lại sản phẩm vào kệ hàng
+Putting item into bag	Có hay không hành động đặt sản phẩm vào giỏ hàng
+Taking item out of bag	Có hay không hành động đặt sản phẩm vào giỏ hàng rồi nhưng lại lấy ra
+Putting item into bag in the 2nd time	Có hay không hành động đã trả sản phẩm vào kệ rồi nhưng lại lấy sản phẩm ra
+Shelf ID	Mã kệ hàng
+Description	Thông tin cơ bản của kệ hàng
+Location_x (center)	Tọa độ trọng tâm kệ hàng theo trục x
+Location_y (center)	Tọa độ trọng tâm kệ hàng theo trục y
+Width	Kích thước kệ hàng theo trục x
+Height	Chiều cao kệ hàng
+Length	Kích thước kệ hàng theo trục y
+Number of items	Số lượng mặt hàng bày bán
+Shape	Hình dạng kệ hàng
