@@ -1,4 +1,3 @@
-
 # FTU Data science competition round 1 notebook
 
 ## Scenario:
@@ -29,3 +28,7 @@ Một số giả thiết cần lưu ý:
 
 “looking at item” → “picking up item” → “holding the item” → “put item into bag”.
 
+___ 
+Contents:
+1. Main note book for data wrangling, EDA, and answers 
+2. Answer.md file for the concise answers in text formate 
