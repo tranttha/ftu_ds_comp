@@ -1,6 +1,6 @@
 # FTU Data science competition round 1 notebook
 
-[Link to repo](https://github.com/tranttha/ftu_ds_comp)--Public and No update after Sep 6th 24
+[Link to repo](https://github.com/tranttha/ftu_ds_comp)--Public and No update after Sep 7th 24
 ____
 
 ## Scenario:
