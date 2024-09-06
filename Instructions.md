@@ -31,12 +31,12 @@ Một số giả thiết cần lưu ý:
 
 
 ## Question 
-01. (5đ) Thống kê ***5 mặt hàng*** có **tổng thời gian nhìn và cầm xem lâu nhất**?
+### 1. (5đ) Thống kê ***5 mặt hàng*** có **tổng thời gian nhìn và cầm xem lâu nhất**?
 
-        result1 = df_cust.groupby('si_id')[['looking_at_item_(s)', 'holding_the_item_(s)']].sum().reset_index()
-        result1['total_time']=result1['looking_at_item_(s)']+result1['holding_the_item_(s)']
-        result1=pd.merge(right=result1,left=df_item, how='right', on='si_id')
-        result1[['shelf_id'	,'item_id',	'name','total_time']].sort_values(by='total_time', ascending=False).head(5)
+        ans = df_cust.groupby('si_id')[['looking_at_item_(s)', 'holding_the_item_(s)']].sum().reset_index()
+        ans['total_time']=ans['looking_at_item_(s)']+ans['holding_the_item_(s)']
+        ans=pd.merge(right=ans,left=df_item, how='right', on='si_id')
+        ans[['shelf_id'	,'item_id',	'name','total_time']].sort_values(by='total_time', ascending=False).head(5)
 
 > ANSWER: Sữa chua uống Yakult, Sữa chua uống Probi, Sữa ông thọ, Bim bim Oishi, Snack khoai tây Lays
 
@@ -48,9 +48,71 @@ Một số giả thiết cần lưu ý:
 |9|0|6|Bim bim Oishi|13866|
 |10|0|7|Snack khoai tây Lays|13362|
 
+---
+### 2. (5đ) Thống kê ***5 mặt hàng*** thường **được cầm lên rồi trả lại nhiều nhất**?
 
+        # picking_up_item & returning_item have no nulls 
+        ans2=df_cust[['si_id','picking_up_item','returning_item']]
+        ans2=ans2[(ans2['picking_up_item']==True) & (ans2['returning_item']==True)].groupby('si_id').count().sort_values(by='picking_up_item',ascending=False).reset_index()
+        ans2=pd.merge(right=ans2, left=df_item[['name', 'si_id']], how='right', on='si_id' )
+        ans2=ans2.drop(columns=['picking_up_item'])
+        ans2.head(5)
 
-08. (6đ) Top 3 quầy hàng có thời lượng trung bình quan tâm đến sản phẩm, trên số lượt tương tác, là lâu nhất (quan tâm tương ứng với việc nhìn và cầm xem)?
+> ANSWER: 
+
+||name|si_id|returning_item|
+|-|-|-|-|
+|0|4 hộp sữa lúa mạch Milo 180ml|22|134|
+|1|Snack khoai tây Lays|07|127|
+|2|Mý ý SG Food|712|117|
+|3|Nước lẩu Barona|714|116|
+|4|Sữa chua Vinamik|72|114|
+
+### 3. (5đ) Các nhóm khách hàng theo độ tuổi (Thiếu niên: 18 - 30; Trung niên: 31 - 60; Cao tuổi: > 60) **mua** mặt hàng nào nhiều nhất?
+
+        shopper_buy=pd.merge(left=demo[['age_group', 'si_id', 'person_id','timestamp']], right=i_i[['si_id', 'person_id', 'timestamp','is_buy']], how='inner', on=['si_id', 'person_id', 'timestamp'])
+        shopper_buy=pd.merge(left=shopper_buy.groupby(['age_group','si_id'])['is_buy'].sum().reset_index(), right=df_item, how='right', on='si_id')
+        shopper_buy=shopper_buy[['si_id','age_group', 'is_buy','name']].sort_values(by='is_buy',ascending=False).reset_index(drop=True)
+        shopper_buy.drop_duplicates(subset=['age_group'],keep='first').sort_values(by='age_group',ascending=True)
+
+> ANSWER: thieu nien = Bánh trứng Custard, trung nien = Kem tràng tiền, cao tuoi = Bánh trứng Custard
+
+||si_id|age_group|is_buy|name|
+|-|-|-|-|-|
+|0|70|2|86|Kem tràng tiền|
+|4|04|3|50|Bánh trứng Custard|
+|10|04|1|41|Bánh trứng Custard|
+
+### 4. (5đ) Ngày nào trong tuần có doanh thu cao nhất?
+
+        ans=pd.merge(left=i_i[['dow', 'si_id', 'is_buy']], right=df_item[['si_id', 'name', 'price_vnd']], how='right', on='si_id')
+        ans[ans['is_buy']==True].groupby('dow')['price_vnd'].sum().sort_values(ascending=False)
+
+> ANSWER Saturday
+
+|dow||
+|-|-|
+|Saturday|     174194600|
+
+### 5. (7đ) Trong 3 nhóm tuổi sau: Thiếu niên (18 - 30), Trung niên (31 - 60), Cao tuổi: (> 60), nhóm tuổi nào có **số người đi siêu thị nhiều nhất?**
+
+        shopper_freq=df_cust[['person_id','age', 'date']]
+        bins = [18, 31, 61, shopper_freq['age'].max() + 1]
+        labels = [1, 2, 3]
+
+        shopper_freq['age_group'] = pd.cut(shopper_freq.age, bins=bins, labels=labels, right=False)
+        shopper_freq=shopper_freq.drop(columns=['age'])
+        shopper_freq.groupby('age_group').count().reset_index(drop=True)
+
+> ANSWER: trung nien
+
+ |person_id|date|
+ |-|-|
+| 0|3574|3574|
+| 1|7617|7617|
+| 2|4203|4203|
+
+### 8. (6đ) Top 3 quầy hàng có thời lượng trung bình quan tâm đến sản phẩm, trên số lượt tương tác, là lâu nhất (quan tâm tương ứng với việc nhìn và cầm xem)?
 
         # interaction per person per date-time per product
         interact= df_cust[['si_id','shelf_id','item_id','person_id','date', 'time', 'holding_the_bag','picking_up_item','returning_item'	,'putting_item_into_bag'	,'taking_item_out_of_bag'	,'putting_item_into_bag_in_the_2nd_time']]
@@ -72,17 +134,18 @@ Một số giả thiết cần lưu ý:
         result8=result8.groupby('shelf_id')['avg_i_t'].sum()
         result8.sort_values(ascending=False)
 
-> ANSWER: 3 4 5 
+> ANSWER: 5 7 3  
 
-|shelf_id|avg_i_t|
-|-|-|
-|3| 1512.723763| 
-|4 |1100.533550| 
-|5|998.517544| 
+
+|shelf_id|description|avg_ii|
+|-|-|-|
+|5|Quầy gia dụng|62.260184|
+|7|Quầy đông lạnh|61.009985|
+|3|Quầy thực phẩm|59.845622|
 
 **note**: df_cus[timestamp, (shelf id)] sum( timestammp) groupby item id / count(item id)
 
-10. (8đ) Người dùng có thói quen di chuyển giữa 2 quầy hàng nào nhiều nhất?
+### 10. (8đ) Người dùng có thói quen di chuyển giữa 2 quầy hàng nào nhiều nhất?
 Ví dụ: Giả sử:
 Người A có đường đi giữa các quầy hàng: (1) → (3) → (2) → (6)
 Người B có đường đi: (3) → (2) → (6)
@@ -113,43 +176,9 @@ Vậy người dùng có thói quen di chuyển nhiều nhất từ quầy (2) s
 **note**: df_cus[timestamp, shelf id]
 
 ___
-05. (7đ) Trong 3 nhóm tuổi sau: Thiếu niên (18 - 30), Trung niên (31 - 60), Cao tuổi: (> 60), nhóm tuổi nào có **số người đi siêu thị nhiều nhất?**
-        shopper=df_cust[['person_id','age', 'date']]
-        bins = [18, 31, 61, shopper['age'].max() + 1]
-        labels = [1, 2, 3]
 
-        shopper['age_group'] = pd.cut(shopper.age, bins=bins, labels=labels, right=False)
-        shopper=shopper.drop(columns=['age'])
-        shopper.groupby('age_group').count().reset_index(drop=True)
-
-> ANSWER: trung nien
-
- |person_id|date|
- |-|-|
-| 0|3574|3574|
-| 1|7617|7617|
-| 2|4203|4203|
 
 **note**: df_cus
----
-02. (5đ) Thống kê ***5 mặt hàng*** thường **được cầm lên rồi trả lại nhiều nhất**?
-
-        # picking_up_item & returning_item have no nulls 
-        result2=i_i[['si_id','picking_up_item','returning_item']]
-        result2=result2[(result2['picking_up_item']==True) & (result2['returning_item']==True)].groupby('si_id').count().sort_values(by='picking_up_item',ascending=False).reset_index()
-        result2=pd.merge(right=result2, left=df_item[['name', 'si_id']], how='right', on='si_id' )
-        result2=result2.drop(columns=['picking_up_item'])
-        result2.head(5)
-
-> ANSWER: 
-
-||name|si_id|returning_item|
-|-|-|-|-|
-|0|4 hộp sữa lúa mạch Milo 180ml|22|134|
-|1|Snack khoai tây Lays|07|127|
-|2|Mý ý SG Food|712|117|
-|3|Nước lẩu Barona|714|116|
-|4|Sữa chua Vinamik|72|114|
 
 ----
 #### define is_buy column
@@ -166,7 +195,6 @@ ___
             )
         ).astype(bool)
 ----
-03. (5đ) Các nhóm khách hàng theo độ tuổi (Thiếu niên: 18 - 30; Trung niên: 31 - 60; Cao tuổi: > 60) **mua** mặt hàng nào nhiều nhất?
 
 06. (5đ) Top 5 các mặt hàng giảm giá được người dùng **mua** nhiều nhất?
         result6=pd.merge(left=i_i.groupby('si_id')['is_buy'].sum().sort_values(ascending=False), right=df_item, how='left',on='si_id').sort_values(by='is_buy', ascending=False)
@@ -184,6 +212,7 @@ si_id	name	is_buy	discount
 
 
 07. (5đ) Top 5 các mặt hàng được chạy quảng cáo được người dùng **mua** nhiều nhất?
+
         result7=pd.merge(left=i_i.groupby('si_id')['is_buy'].sum().sort_values(ascending=False), right=df_item, how='left',on='si_id').sort_values(by='is_buy', ascending=False)
         result7[result7['marketing_strategy'] == True].sort_values(by='is_buy',ascending=False)[['name','si_id', 'is_buy','marketing_strategy']].set_index('si_id').head(5)
 
@@ -197,10 +226,17 @@ si_id	name	is_buy	marketing_strategy
 111	Khăn mặt Shine	90	True
 110	Khăn tắm Shine	87	True
 
-04. (5đ) Ngày nào trong tuần có doanh thu cao nhất?
-**note**: df_cus (primary_key = 'Item ID','Shelf ID'), get bought pk by day and join df_item['Price_vnd']
+
 
 09. (7đ) Top 3 quầy hàng có số sản phẩm được **mua** nhiều nhất?
+
+> ANSWER : Quầy hoá mỹ phẩm, Quầy đông lạnh, Quầy bánh kẹo
+
+
+shelf_id	description	number_of_items	is_buy
+1	1	Quầy hoá mỹ phẩm	18	840
+7	7	Quầy đông lạnh	16	675
+0	0	Quầy bánh kẹo	13	586
     **note**: df_shelf 
 
 ___
