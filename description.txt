@@ -11,6 +11,7 @@ HSD	Hạn sử dụng
 Marketing strategy	Có đang chạy chiến dịch quảng cáo không
 Discount	Giảm giá bao nhiêu phần trăm
 Rate	Điểm đánh giá 
+
 Shelf ID	Mã kệ hàng
 Person ID	Mã khách hàng
 Timestamp	Thời điểm ghi nhận tương tác
@@ -20,6 +21,7 @@ Height	Chiều cao
 Weight	Cân nặng
 Married status	Tình trạng hôn nhân
 Moving speed (m/s)	Tốc độ di chuyển
+
 Item ID	Mã mặt hàng
 Looking at item (s)	Nhìn vào sản phẩm bao lâu (giây)
 Holding the item (s)	Cầm xem sản phẩm bao lâu (giây)
