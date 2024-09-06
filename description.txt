@@ -21,7 +21,6 @@ Height	Chiều cao
 Weight	Cân nặng
 Married status	Tình trạng hôn nhân
 Moving speed (m/s)	Tốc độ di chuyển
-
 Item ID	Mã mặt hàng
 Looking at item (s)	Nhìn vào sản phẩm bao lâu (giây)
 Holding the item (s)	Cầm xem sản phẩm bao lâu (giây)
@@ -31,6 +30,7 @@ Returning item	Có hay không hành động trả lại sản phẩm vào kệ h
 Putting item into bag	Có hay không hành động đặt sản phẩm vào giỏ hàng
 Taking item out of bag	Có hay không hành động đặt sản phẩm vào giỏ hàng rồi nhưng lại lấy ra
 Putting item into bag in the 2nd time	Có hay không hành động đã trả sản phẩm vào kệ rồi nhưng lại lấy sản phẩm ra
+
 Shelf ID	Mã kệ hàng
 Description	Thông tin cơ bản của kệ hàng
 Location_x (center)	Tọa độ trọng tâm kệ hàng theo trục x
