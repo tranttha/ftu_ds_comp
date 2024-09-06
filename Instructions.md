@@ -1,5 +1,8 @@
 # FTU Data science competition round 1 notebook
 
+[Link to repo](https://github.com/tranttha/ftu_ds_comp)--Public and No update after Sep 6th 24
+____
+
 ## Scenario:
 Bạn là một nhà phân tích dữ liệu tài năng, được giao trọng trách tối ưu hóa hoạt động kinh doanh của chi nhánh HomeMart. Hằng ngày có tới hàng nghìn khách hàng ghé thăm và mua sắm tại cửa hàng. Chi nhánh của bạn là một trong các chi nhánh trọng điểm nên đã được bố trí hệ thống AI camera . Với nguồn dữ liệu khổng lồ thu thập được từ hệ thống, bạn sẽ phải trổ tài để khám phá những bí mật ẩn sâu trong hành vi mua sắm của khách hàng.
 
@@ -29,6 +32,7 @@ Một số giả thiết cần lưu ý:
 “looking at item” → “picking up item” → “holding the item” → “put item into bag”.
 
 ___ 
-Contents:
+## ToContents:
 1. Main note book for data wrangling, EDA, and answers 
 2. Answer.md file for the concise answers in text formate 
+3. setup folder for my go-to env for data science data wranling, EDA, visualization
